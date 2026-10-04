@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>John 1 — My Bible Golden Master v1</title>
+<style>
+:root{--ink:#1d1d1f;--muted:#6b6b70;--paper:#fbfaf7;--card:#fff;--line:#ddd8cf;--verb:#b42318;--noun:#177245;--variant:#1769aa}
+*{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Noto Serif",serif}
+header{position:sticky;top:0;background:rgba(251,250,247,.96);border-bottom:1px solid var(--line);padding:12px 16px;z-index:3}
+h1{font-size:19px;margin:0}.sub{font:12px system-ui;color:var(--muted);margin-top:4px}
+main{max-width:900px;margin:auto;padding:22px 17px 80px}.verse{margin:0 0 20px;line-height:2.05;font-size:23px}
+.vn{font:700 12px system-ui;color:#777;margin-right:5px;vertical-align:middle}.verseAudio{font:700 11px system-ui;border:1px solid #ccc;border-radius:14px;background:#f5f5f5;padding:3px 7px;margin-right:8px;cursor:pointer;vertical-align:middle}.tok{cursor:pointer;border-radius:5px;padding:1px 2px}
+.tok:hover{background:#eeeae2}.V{color:var(--verb);font-weight:650}.N{color:var(--noun);font-weight:650}
+.var{color:var(--variant);font:800 12px system-ui;vertical-align:super;margin-left:1px;cursor:pointer}
+.status{font:12px system-ui;background:#f0eee8;border:1px solid var(--line);padding:9px 12px;border-radius:9px;margin-bottom:18px}
+dialog{border:0;border-radius:16px;max-width:620px;width:calc(100% - 24px);padding:0;box-shadow:0 18px 70px #0004}
+dialog::backdrop{background:#0007}.pop{padding:20px}.g{font-size:29px;font-weight:700}.grid{display:grid;grid-template-columns:130px 1fr;gap:8px 12px;margin-top:14px;font:14px/1.5 system-ui}
+.lab{color:#777;font-weight:650}.deep{margin-top:15px;padding:12px;background:#f5f2eb;border-radius:10px;font:14px/1.55 system-ui}
+.close{float:right;border:0;background:#eee;border-radius:20px;padding:7px 11px}.blue{color:var(--variant)}
+footer{font:12px/1.55 system-ui;color:#666;border-top:1px solid var(--line);padding-top:16px}
+</style></head><body>
+<header><h1>ΚΑΤΑ ΙΩΑΝΝΗΝ · 1</h1><div class="sub">My Bible — Original Language Study · Golden Master Candidate v1.0</div></header>
+<main><div id="status" class="status">MorphGNT/SBLGNT 데이터를 불러오는 중…</div><section id="text"></section>
+<footer>SBLGNT text: CC BY 4.0 · MorphGNT parsing/lemmatization: CC-BY-SA. This study interface separates source, linguistic, variant, and presentation layers.</footer></main>
+<dialog id="dlg"><div class="pop"><button class="close" onclick="dlg.close()">닫기</button><div id="pc"></div></div></dialog>
+<script>
+const GLOSS={"ἐν": ["in, within", "~안에, ~에서"], "ἀρχή": ["beginning, origin", "시작, 기원"], "εἰμί": ["be, exist", "이다, 존재하다"], "ὁ": ["the; article", "그; 정관사"], "λόγος": ["word, message, expression", "말씀, 말, 표현"], "καί": ["and, also, even", "그리고, 또한, 심지어"], "πρός": ["to, toward, with", "~에게, ~을 향하여, ~와 함께"], "θεός": ["God, god", "하나님, 신"], "οὗτος": ["this, this one", "이것, 이 사람"], "πᾶς": ["all, every", "모든, 각각의"], "διά": ["through; because of", "~을 통하여; ~때문에"], "αὐτός": ["he, she, it; self", "그, 그녀, 그것; 자신"], "γίνομαι": ["become, happen, come into being", "되다, 일어나다, 생겨나다"], "χωρίς": ["without, apart from", "~없이, ~을 떠나"], "οὐδέ": ["and not, neither, not even", "그리고 ~아니다, ~도 아니다"], "εἷς": ["one", "하나"], "ὅς": ["who, which, that", "~하는 이/것"], "ζωή": ["life", "생명"], "φῶς": ["light", "빛"], "ἄνθρωπος": ["human being, person", "사람, 인간"], "σκοτία": ["darkness", "어둠"], "φαίνω": ["shine, appear", "비추다, 나타나다"], "οὐ": ["not", "~아니다, ~않다"], "καταλαμβάνω": ["grasp, comprehend, overcome", "붙잡다, 깨닫다, 이기다"], "ἀποστέλλω": ["send, send away", "보내다"], "παρά": ["from, beside, with", "~로부터, ~곁에"], "ὄνομα": ["name", "이름"], "Ἰωάννης": ["John", "요한"], "ἔρχομαι": ["come, go", "오다, 가다"], "εἰς": ["into, to, for", "~안으로, ~에게, ~을 위하여"], "μαρτυρία": ["testimony, witness", "증언, 증거"], "ἵνα": ["so that, in order that", "~하도록, ~하기 위하여"], "μαρτυρέω": ["bear witness, testify", "증언하다"], "περί": ["about, concerning", "~에 관하여"], "πιστεύω": ["believe, trust", "믿다, 신뢰하다"], "ἐκεῖνος": ["that, that one", "저것, 그 사람"], "ἀλλά": ["but, rather", "그러나, 오히려"], "ἀληθινός": ["true, genuine", "참된, 진실한"], "φωτίζω": ["give light, enlighten", "비추다, 밝히다"], "κόσμος": ["world", "세상, 세계"], "γινώσκω": ["know, recognize", "알다, 인식하다"], "ἴδιος": ["one's own, private", "자기의, 고유한"], "παραλαμβάνω": ["receive, take to oneself", "영접하다, 받아들이다"], "ὅσος": ["as many as, as much as", "~하는 모든, ~만큼"], "δέ": ["but, and, now", "그러나, 그리고, 이제"], "λαμβάνω": ["receive, take", "받다, 취하다"], "δίδωμι": ["give", "주다"], "ἐξουσία": ["authority, right", "권위, 권리"], "τέκνον": ["child", "자녀"], "ἐκ": ["from, out of", "~로부터, ~밖으로"], "αἷμα": ["blood", "피"], "θέλημα": ["will, desire", "뜻, 의지"], "σάρξ": ["flesh", "육체"], "ἀνήρ": ["man, husband", "남자, 남편"], "γεννάω": ["beget, give birth", "낳다, 나게 하다"], "σκηνόω": ["dwell, pitch a tent", "거하다, 장막을 치다"], "ἐγώ": ["I, we (by inflection/context)", "나, 우리"], "θεάομαι": ["behold, observe", "바라보다, 주의 깊게 보다"], "δόξα": ["glory", "영광"], "ὡς": ["as, like, about", "~처럼, ~같이, 약"], "μονογενής": ["unique, one-of-a-kind", "유일한, 독특한"], "πατήρ": ["father", "아버지"], "πλήρης": ["full, complete", "충만한, 가득한"], "χάρις": ["grace, favor", "은혜, 호의"], "ἀλήθεια": ["truth", "진리"], "κράζω": ["cry out, call aloud", "외치다"], "λέγω": ["say, speak", "말하다"], "ὀπίσω": ["behind, after", "뒤에, 이후에"], "ἔμπροσθεν": ["before, in front of", "앞에"], "ὅτι": ["that, because", "~라는 것, 왜냐하면"], "πρῶτος": ["first, before", "첫째, 먼저"], "πλήρωμα": ["fullness", "충만"], "ἀντί": ["instead of, for, in place of", "~대신에, ~에 상응하여"], "νόμος": ["law", "율법"], "Μωϋσῆς": ["Moses", "모세"], "Ἰησοῦς": ["Jesus", "예수"], "Χριστός": ["Christ, Messiah", "그리스도, 메시아"], "οὐδείς": ["no one, nothing", "아무도 ~않다, 아무것도 ~않다"], "ὁράω": ["see, perceive", "보다, 인식하다"], "πώποτε": ["ever, at any time", "언제든, 일찍이"], "κόλπος": ["bosom, breast, close place", "품, 가슴, 가까운 자리"], "ἐξηγέομαι": ["explain, make known, recount", "설명하다, 알려 주다"], "ὅτε": ["when", "~할 때"], "Ἰουδαῖος": ["Jew, Judean", "유대인"], "Ἱεροσόλυμα": ["Jerusalem", "예루살렘"], "ἱερεύς": ["priest", "제사장"], "Λευίτης": ["Levite", "레위인"], "ἐρωτάω": ["ask, question", "묻다, 질문하다"], "σύ": ["you", "너, 당신"], "τίς": ["who? what?; someone", "누구? 무엇?; 어떤 이"], "ὁμολογέω": ["confess, acknowledge", "시인하다, 고백하다"], "ἀρνέομαι": ["deny, refuse", "부인하다, 거절하다"], "οὖν": ["therefore, then", "그러므로, 그러면"], "Ἠλίας": ["Elijah", "엘리야"], "προφήτης": ["prophet", "선지자, 예언자"], "ἀποκρίνομαι": ["answer, reply", "대답하다"], "οὔ": ["no", "아니다"], "ἀπόκρισις": ["answer, reply", "대답"], "πέμπω": ["send", "보내다"], "σεαυτοῦ": ["yourself, of yourself", "너 자신, 네 자신에 관하여"], "φημί": ["say, declare", "말하다"], "φωνή": ["voice, sound", "음성, 소리"], "βοάω": ["cry out, shout", "외치다"], "ἔρημος": ["wilderness, desert", "광야, 사막"], "εὐθύνω": ["make straight, direct", "곧게 하다, 바로잡다"], "ὁδός": ["way, road", "길"], "κύριος": ["Lord, master", "주, 주인"], "καθώς": ["just as, as", "~와 같이"], "Ἠσαΐας": ["Isaiah", "이사야"], "Φαρισαῖος": ["Pharisee", "바리새인"], "βαπτίζω": ["baptize, immerse", "침례/세례 주다, 잠그다"], "εἰ": ["if, whether", "만일, ~인지"], "ὕδωρ": ["water", "물"], "μέσος": ["middle, midst", "가운데"], "ἵστημι": ["stand, set, cause to stand", "서다, 세우다"], "οἶδα": ["know", "알다"], "ἄξιος": ["worthy, fit", "합당한"], "λύω": ["loose, untie, release", "풀다, 매듭을 풀다"], "ἱμάς": ["strap, thong", "끈, 가죽끈"], "ὑπόδημα": ["sandal, footwear", "신발, 샌들"], "Βηθανία": ["Bethany", "베다니"], "πέραν": ["beyond, across", "건너편에, 너머에"], "Ἰορδάνης": ["Jordan", "요단"], "ὅπου": ["where", "~하는 곳"], "ἐπαύριον": ["the next day", "다음 날"], "βλέπω": ["see, look", "보다"], "ἴδε": ["behold! look!", "보라!"], "ἀμνός": ["lamb", "어린양"], "αἴρω": ["take up, take away", "들다, 제거하다"], "ἁμαρτία": ["sin", "죄"], "ὑπέρ": ["for, on behalf of; above", "~을 위하여, ~대신하여; 위에"], "κἀγώ": ["and I, I also", "그리고 나도"], "φανερόω": ["reveal, make known", "나타내다, 드러내다"], "Ἰσραήλ": ["Israel", "이스라엘"], "πνεῦμα": ["spirit, Spirit, wind", "영, 성령, 바람"], "καταβαίνω": ["descend, go down", "내려오다"], "περιστερά": ["dove", "비둘기"], "οὐρανός": ["heaven, sky", "하늘"], "μένω": ["remain, stay, abide", "머물다, 거하다"], "ἐπί": ["on, upon, over, at", "~위에, ~에"], "ἄν": ["modal particle; ever/if nuance", "양태 불변화사; 가능·조건 뉘앙스"], "ἅγιος": ["holy, set apart", "거룩한, 구별된"], "ἐκλεκτός": ["chosen, elect", "선택된, 택함 받은"], "πάλιν": ["again", "다시"], "μαθητής": ["disciple, learner", "제자"], "δύο": ["two", "둘"], "ἐμβλέπω": ["look intently at", "주시하다, 똑바로 보다"], "περιπατέω": ["walk, live/conduct oneself", "걷다, 행하다"], "ἀκούω": ["hear, listen", "듣다"], "λαλέω": ["speak, talk", "말하다"], "ἀκολουθέω": ["follow", "따르다"], "στρέφω": ["turn", "돌이키다"], "ζητέω": ["seek, look for", "찾다, 구하다"], "ῥαββί": ["Rabbi, teacher", "랍비, 선생"], "μεθερμηνεύω": ["translate, interpret", "번역하다, 해석하다"], "διδάσκαλος": ["teacher", "선생, 교사"], "ποῦ": ["where?", "어디?"], "ἡμέρα": ["day", "날"], "ὥρα": ["hour, time", "시간, 시각"], "δέκατος": ["tenth", "열째"], "Ἀνδρέας": ["Andrew", "안드레"], "ἀδελφός": ["brother, sibling", "형제"], "Σίμων": ["Simon", "시몬"], "Πέτρος": ["Peter, rock/stone name", "베드로"], "εὑρίσκω": ["find", "찾다"], "Μεσσίας": ["Messiah", "메시아"], "ἄγω": ["lead, bring", "이끌다, 데려오다"], "υἱός": ["son", "아들"], "καλέω": ["call, name", "부르다, 이름짓다"], "Κηφᾶς": ["Cephas", "게바"], "ἑρμηνεύω": ["interpret, translate", "해석하다, 번역하다"], "θέλω": ["will, want, desire", "원하다, 뜻하다"], "ἐξέρχομαι": ["go out, depart", "나가다"], "Γαλιλαία": ["Galilee", "갈릴리"], "Φίλιππος": ["Philip", "빌립"], "ἀπό": ["from, away from", "~로부터, ~에서"], "Βηθσαϊδά": ["Bethsaida", "벳새다"], "πόλις": ["city", "도시, 성"], "Ναθαναήλ": ["Nathanael", "나다나엘"], "γράφω": ["write", "쓰다"], "Ἰωσήφ": ["Joseph", "요셉"], "Ναζαρέτ": ["Nazareth", "나사렛"], "δύναμαι": ["be able, can", "할 수 있다"], "τις": ["someone, something; any", "어떤 사람, 무엇, 어떤"], "ἀγαθός": ["good", "선한, 좋은"], "ἀληθῶς": ["truly, really", "참으로"], "Ἰσραηλίτης": ["Israelite", "이스라엘 사람"], "δόλος": ["deceit, guile", "속임, 간사함"], "πόθεν": ["from where?", "어디서부터?"], "πρό": ["before", "~전에, ~앞에"], "φωνέω": ["call, call out", "부르다"], "ὑπό": ["under, by", "~아래에, ~에 의해"], "συκῆ": ["fig tree", "무화과나무"], "βασιλεύς": ["king", "왕"], "ὑποκάτω": ["under, beneath", "아래에"], "μέγας": ["great, large", "큰, 위대한"], "ἀμήν": ["amen; truly", "아멘; 진실로"], "ἀνοίγω": ["open", "열다"], "ἄγγελος": ["angel, messenger", "천사, 사자"], "ἀναβαίνω": ["ascend, go up", "올라가다"]}, DEEP={"JHN.1.1": {"λόγος": "John opens with λόγος as a personal referent who already 'was' in the beginning, was πρὸς τὸν θεόν, and is predicated θεός. The immediate context, not a single dictionary gloss, controls the sense.", "πρός": "With the accusative τὸν θεόν, πρός retains a relational/directional force: toward / in relation to, conventionally rendered 'with' here.", "θεός": "In καὶ θεὸς ἦν ὁ λόγος, θεός is an anarthrous predicate nominative and ὁ λόγος is the articular subject; word order foregrounds θεός."}, "JHN.1.14": {"σκηνόω": "Literally 'to pitch/dwell in a tent'; in this context it evokes dwelling among us and can invite tabernacle associations without making the lexical gloss itself 'tabernacle theology'."}, "JHN.1.18": {"μονογενής": "The adjective emphasizes uniqueness/one-of-a-kind relation. The verse also contains a major textual variant in the following noun."}, "JHN.1.29": {"ἀμνός": "John's title 'the Lamb of God' is linked immediately with taking away the sin of the world; the phrase invites biblical sacrificial/passover connections that belong in the research layer."}, "JHN.1.51": {"ἀναβαίνω": "The paired participles 'ascending and descending' frame the Son of Man as the locus of heavenly-earthly movement in the saying."}}, VARIANTS={"16": {"anchorLemma": "ὅτι", "sbl": "ὅτι ἐκ τοῦ πληρώματος...", "ubs": "ὅτι ἐκ τοῦ πληρώματος...", "tr": "καὶ ἐκ τοῦ πληρώματος...", "note": "접속사 차이: 비평본문은 ὅτι('왜냐하면/이는')로 앞 문장과 이유 관계를 표시하고, 전통본문은 καί('그리고')로 연결합니다. 문맥 연결 방식에 작은 차이가 있습니다.", "grammar": "SBLGNT/UBS5는 절을 ὅτι(‘왜냐하면/이는’)로 시작하여 앞의 진술과 이유·근거 관계를 문법적으로 표시합니다. TR은 καί(‘그리고/또한’)를 두어 등위적으로 이어 갑니다.", "semantic": "두 본문 모두 그리스도의 충만에서 우리가 받았다는 내용을 말하지만, ὅτι는 앞 문장을 설명하는 근거의 성격을 더 분명히 하고 καί는 진술의 연속성을 더 직접적으로 나타냅니다.", "translation": "SBLGNT/UBS5는 ‘이는/왜냐하면 그의 충만에서…’가 자연스럽고, TR은 ‘그리고/또 그의 충만에서…’가 본문 차이를 더 직접 반영합니다.", "significance": "내용 자체의 변화는 작지만 1:15와 1:16의 논리적 연결 방식에 영향을 주는 접속사 이형입니다. 교리적 결론보다 담화 구조와 번역 연결어에 주로 영향을 줍니다."}, "18": {"anchorLemma": "θεός", "anchorWord": "θεὸς", "sbl": "μονογενὴς θεός", "ubs": "μονογενὴς θεός", "tr": "ὁ μονογενὴς υἱός", "note": "중요 명사 이형: '유일한/독특한 하나님' 계열과 '독생/유일한 아들' 계열의 차이입니다. 번역 문구와 해석에 직접 영향을 줍니다.", "grammar": "SBLGNT는 μονογενὴς θεός에서 μονογενής가 θεός를 수식하는 구조입니다. TR은 관사 ὁ와 함께 μονογενὴς υἱός를 읽어 ‘유일한/독생 아들’이라는 명사구를 형성합니다.", "semantic": "차이는 단순 관사나 어순이 아니라 핵심 명사 θεός(하나님)와 υἱός(아들)의 차이입니다. 두 읽기 모두 바로 뒤의 ‘아버지의 품에 있는’ 분을 가리키지만 그분을 지칭하는 칭호가 달라집니다.", "translation": "SBLGNT: ‘유일한/독특한 하나님…’ 계열. TR: ‘그 유일한/독생 아들…’ 계열. 따라서 번역 본문에 직접 드러나는 중요한 차이입니다.", "significance": "요 1:18의 그리스도론적 표현에 직접 영향을 주는 중요한 실질적 이형입니다. 어느 읽기를 택해도 문맥은 아버지를 계시하는 그리스도를 가리키지만, 사용되는 칭호가 달라 본문비평과 번역에서 반드시 표시할 가치가 있습니다."}, "19": {"anchorLemma": "ἀποστέλλω", "sbl": "ἀπέστειλαν οἱ Ἰουδαῖοι...", "ubs": "ἀπέστειλαν ... (πρὸς αὐτόν은 판본별 차이)", "tr": "ἀπέστειλαν ...", "note": "일부 비평본문 전통에는 πρὸς αὐτόν('그에게')이 명시됩니다. 행위의 대상은 문맥상 동일하지만 표현의 명시성에 차이가 있습니다.", "grammar": "이형은 ἀπέστειλαν(‘보냈다’) 뒤에 방향·대상을 명시하는 πρὸς αὐτόν(‘그에게’)이 포함되느냐의 첨가/생략 문제입니다. 동사의 시제·태·법 자체는 변하지 않습니다.", "semantic": "πρὸς αὐτόν이 있으면 파송의 방향이 요한에게라는 사실을 문법적으로 명시합니다. 없어도 뒤의 ‘그에게 묻게 하려고’라는 문맥 때문에 대상은 분명합니다.", "translation": "긴 읽기는 ‘유대인들이 예루살렘에서 제사장들과 레위인들을 그에게 보내어…’처럼 ‘그에게’를 명시할 수 있고, 짧은 읽기는 그 표현 없이 자연스럽게 번역할 수 있습니다.", "significance": "사건의 참여자나 내용은 바뀌지 않습니다. 주로 표현의 명시성에 영향을 주는 비교적 작은 이형이지만, 실제 단어의 첨가/생략이므로 관주형 본문에서는 표시할 수 있습니다."}, "27": {"anchorLemma": "ἔρχομαι", "sbl": "ὁ ὀπίσω μου ἐρχόμενος...", "ubs": "ὁ ὀπίσω μου ἐρχόμενος...", "tr": "ὁ ὀπίσω μου ἐρχόμενος, ὃς ἔμπροσθέν μου γέγονεν...", "note": "전통본문에는 1:30과 유사한 '내 앞선 이가 되었다' 절이 더 길게 포함되는 계열이 있습니다. 문장의 길이와 반복 강조에 영향을 줍니다.", "grammar": "TR 계열의 긴 읽기는 ὁ ὀπίσω μου ἐρχόμενος 뒤에 관계절 ὃς ἔμπροσθέν μου γέγονεν을 더하여 1:15·1:30과 유사한 표현을 반복합니다. SBLGNT/UBS5의 짧은 읽기에는 이 절이 없습니다.", "semantic": "긴 읽기는 ‘내 뒤에 오시는 분’이 ‘내 앞선 분이 되셨다’는 선재/우월성 표현을 이 절에서도 반복적으로 강조합니다. 짧은 읽기는 곧바로 신발끈을 풀 자격이 없다는 요한의 자기 낮춤에 초점을 둡니다.", "translation": "TR의 긴 읽기를 따르면 ‘내 뒤에 오시는 이, 곧 나보다 앞서신 이…’에 해당하는 문구가 추가됩니다. 비평본문에서는 그 반복 문구 없이 문장이 더 짧습니다.", "significance": "새로운 사상을 만드는 이형이라기보다 요한복음 안의 평행 표현을 이 위치에도 반복하느냐의 차이입니다. 문장 길이와 강조에는 눈에 띄는 영향을 주므로 표시 가치가 있습니다."}, "28": {"anchorLemma": "Βηθανία", "sbl": "Βηθανίᾳ", "ubs": "Βηθανίᾳ", "tr": "Βηθαβαρᾷ", "note": "지명 이형: 베다니와 베다바라의 차이입니다. 주로 지리적 식별에 영향을 줍니다.", "grammar": "문법 구조는 동일하고 고유지명만 Βηθανίᾳ(베다니)와 Βηθαβαρᾷ(베다바라)로 갈립니다. 둘 다 전치사 ἐν의 지배를 받는 여격 지명입니다.", "semantic": "사건의 내용은 변하지 않지만 세례 요한의 활동 장소를 어느 지명으로 식별하느냐가 달라집니다.", "translation": "SBLGNT/UBS5: ‘베다니에서’. TR: ‘베다바라에서’. 번역에서는 지명 자체가 달라져야 합니다.", "significance": "신학적 내용보다 역사·지리적 식별에 중요한 이형입니다. 요단 건너편의 정확한 장소를 논할 때 직접적인 영향을 주므로 본문에 ※로 표시할 가치가 있습니다."}, "34": {"anchorLemma": "ἐκλεκτός", "sbl": "ὁ ἐκλεκτὸς τοῦ θεοῦ", "ubs": "ὁ υἱὸς τοῦ θεοῦ (UBS/NA 계열)", "tr": "ὁ υἱὸς τοῦ θεοῦ", "note": "SBLGNT의 '하나님의 선택된 이'와 다수 비평/전통본문의 '하나님의 아들'이 갈리는 중요한 칭호 이형입니다.", "grammar": "이형의 핵심은 서술 명사구의 중심어입니다. SBLGNT의 ἐκλεκτός는 형용사 ‘선택된/택함 받은’가 명사적으로 쓰였고, 다른 주요 읽기의 υἱός는 명사 ‘아들’입니다. 둘 다 τοῦ θεοῦ와 결합합니다.", "semantic": "‘하나님의 선택된 이’와 ‘하나님의 아들’은 동일 인물을 가리키지만 칭호의 의미 영역이 다릅니다. 전자는 선택·임명에, 후자는 아들됨이라는 관계적 칭호에 직접 초점을 둡니다.", "translation": "ἐκλεκτός 읽기: ‘이분은 하나님의 선택된 이이시다.’ υἱός 읽기: ‘이분은 하나님의 아들이시다.’ 번역에서 핵심 술어가 완전히 달라집니다.", "significance": "세례 요한의 증언에서 예수께 붙이는 칭호 자체가 달라지는 실질적인 이형입니다. 문맥의 인물 동일성은 변하지 않지만 그리스도론적 표현이 달라지므로 상세 설명이 필요한 중요한 이형입니다."}, "42": {"anchorLemma": "Ἰωάννης", "anchorWord": "Ἰωάννου", "sbl": "Σίμων ὁ υἱὸς Ἰωάννου", "ubs": "Σίμων ὁ υἱὸς Ἰωάννου", "tr": "Σίμων ὁ υἱὸς Ἰωνᾶ", "note": "부칭 이형: '요한의 아들'과 '요나의 아들' 계열의 차이입니다.", "grammar": "문장 구조는 동일하며 부칭의 속격 고유명사만 Ἰωάννου(요한의)와 Ἰωνᾶ(요나의)로 갈립니다. 둘 다 υἱός를 한정하는 속격입니다.", "semantic": "시몬의 아버지 이름을 ‘요한’으로 전하느냐 ‘요나’로 전하느냐의 차이입니다. 예수께서 시몬에게 Κηφᾶς/Πέτρος라는 새 이름을 주시는 사건의 의미는 동일합니다.", "translation": "SBLGNT/UBS5: ‘요한의 아들 시몬’. TR: ‘요나의 아들 시몬’. 번역에서는 인명 한 단어가 직접 달라집니다.", "significance": "신학적 의미보다 인명·역사적 세부에 영향을 주는 이형입니다. 다른 복음서의 ‘바요나’ 표현과 비교할 때 특히 본문비평적으로 관심이 있습니다."}, "49": {"anchorLemma": "βασιλεύς", "sbl": "σὺ βασιλεὺς εἶ τοῦ Ἰσραήλ", "ubs": "σὺ ... βασιλεὺς εἶ ...", "tr": "σὺ εἶ ὁ βασιλεὺς τοῦ Ἰσραήλ", "note": "어순과 관사 유무가 다른 계열이 있습니다. 기본 고백의 의미는 매우 가깝지만 문법적 강조 방식이 달라집니다.", "grammar": "읽기들 사이에는 βασιλεύς 주변의 관사 유무와 σὺ/εἶ의 어순 차이가 있습니다. 술어 명사 βασιλεύς와 주어 σὺ의 기본 통사 관계는 유지됩니다.", "semantic": "모든 읽기에서 나다나엘은 예수를 ‘이스라엘의 왕’으로 고백합니다. 관사와 어순 차이는 표현상의 강조나 문체에 영향을 줄 수 있지만 고백의 지시 내용은 사실상 같습니다.", "translation": "대부분의 자연스러운 번역에서는 모두 ‘당신은 이스라엘의 왕이십니다’로 수렴할 가능성이 큽니다. 형식 대응을 강하게 하면 관사·어순 차이를 주석에서 설명할 수 있습니다.", "significance": "본문 형태에는 차이가 있으나 번역 의미와 신학적 내용에 미치는 영향은 작습니다. 따라서 중요한 명사 교체형 이형보다 낮은 수준의 이형으로 분류하는 것이 적절합니다."}, "51": {"anchorLemma": "ὁράω", "anchorWord": "ὄψεσθε",
+"sbl": "ἀμὴν ἀμὴν λέγω ὑμῖν, ὄψεσθε τὸν οὐρανὸν ἀνεῳγότα...",
+"ubs": "ἀμὴν ἀμὴν λέγω ὑμῖν, ὄψεσθε τὸν οὐρανὸν ἀνεῳγότα...",
+"tr": "ἀμὴν ἀμὴν λέγω ὑμῖν, ἀπ’ ἄρτι ὄψεσθε τὸν οὐρανὸν ἀνεῳγότα...", "grammar": "TR은 미래 중간 직설법 2인칭 복수 ὄψεσθε 바로 앞에 시간 부사구 ἀπ’ ἄρτι를 추가합니다. SBLGNT/UBS5에서는 ὄψεσθε가 별도의 시간 부사구 없이 이어집니다.", "semantic": "ἀπ’ ἄρτι는 ‘지금부터/from now on’이라는 시간적 기점을 명시합니다. 따라서 차이는 ‘볼 것이다’라는 미래 사건 자체보다 그 시작 시점을 명시하느냐에 있습니다.", "translation": "SBLGNT/UBS5: ‘너희가 하늘이 열린 것을 볼 것이다…’ / TR: ‘이제부터 너희가 하늘이 열린 것을 볼 것이다…’. TR에서는 ‘이제부터’가 실제 번역에 추가됩니다.", "significance": "열린 하늘, 하나님의 천사들, 인자라는 중심 내용은 동일합니다. 그러나 TR은 그 광경을 보는 시간적 출발점을 명시하므로 번역과 시간적 뉘앙스에는 실제 영향이 있습니다."}};
+const POS={A:"Adjective",C:"Conjunction",D:"Adverb",I:"Interjection",N:"Noun",P:"Preposition",R:"Pronoun/Article",V:"Verb",X:"Particle"};
+function morph(code){
+ const person={"1":"1st person","2":"2nd person","3":"3rd person"},tense={P:"present",I:"imperfect",F:"future",A:"aorist",X:"perfect",Y:"pluperfect"},
+ voice={A:"active",M:"middle",P:"passive"},mood={I:"indicative",D:"imperative",S:"subjunctive",O:"optative",N:"infinitive",P:"participle"},
+ kase={N:"nominative",G:"genitive",D:"dative",A:"accusative",V:"vocative"},num={S:"singular",P:"plural"},gender={M:"masculine",F:"feminine",N:"neuter"};
+ if(!code||code==="--------")return "indeclinable / morphology not encoded";
+ let a=[]; if(person[code[0]])a.push(person[code[0]]); if(tense[code[1]])a.push(tense[code[1]]); if(voice[code[2]])a.push(voice[code[2]]);
+ if(mood[code[3]])a.push(mood[code[3]]); if(kase[code[4]])a.push(kase[code[4]]); if(num[code[5]])a.push(num[code[5]]); if(gender[code[6]])a.push(gender[code[6]]);
+ return a.join(" · ")||code;
+}
+function translit(s){const m={"α":"a","β":"b","γ":"g","δ":"d","ε":"e","ζ":"z","η":"ē","θ":"th","ι":"i","κ":"k","λ":"l","μ":"m","ν":"n","ξ":"x","ο":"o","π":"p","ρ":"r","σ":"s","ς":"s","τ":"t","υ":"y","φ":"ph","χ":"ch","ψ":"ps","ω":"ō"};return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().split("").map(x=>m[x]||x).join("")}
+function koPron(s){
+ const x=clean(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ // Koine-oriented learner approximation. Diphthongs are processed first.
+ let r=x.replace(/αι/g,"e").replace(/ει|οι|υι/g,"i").replace(/ου/g,"u")
+  .replace(/αυ/g,"av").replace(/ευ/g,"ev").replace(/ηυ/g,"iv")
+  .replace(/γγ/g,"ng").replace(/γκ/g,"ng").replace(/γχ/g,"nch").replace(/γξ/g,"nx");
+ const map={"α":"a","β":"v","γ":"g","δ":"d","ε":"e","ζ":"z","η":"i","θ":"th","ι":"i","κ":"k","λ":"l","μ":"m","ν":"n","ξ":"ks","ο":"o","π":"p","ρ":"r","σ":"s","ς":"s","τ":"t","υ":"i","φ":"f","χ":"ch","ψ":"ps","ω":"o"};
+ r=r.split("").map(c=>map[c]||c).join("").replace(/rr/g,"r");
+ // Readable Korean syllabification with final n/m/l/r/k/p/s attached as 받침 where natural.
+ const onset={"":"ㅇ","g":"ㄱ","k":"ㅋ","d":"ㄷ","t":"ㅌ","n":"ㄴ","r":"ㄹ","l":"ㄹ","m":"ㅁ","p":"ㅍ","v":"ㅂ","f":"ㅍ","s":"ㅅ","z":"ㅈ","h":"ㅎ","ch":"ㅎ","th":"ㅌ","ps":"ㅍㅅ","ks":"ㅋㅅ"};
+ const V={"a":"ㅏ","e":"ㅔ","i":"ㅣ","o":"ㅗ","u":"ㅜ"};
+ const L={"ㄱ":0,"ㄲ":1,"ㄴ":2,"ㄷ":3,"ㄸ":4,"ㄹ":5,"ㅁ":6,"ㅂ":7,"ㅃ":8,"ㅅ":9,"ㅆ":10,"ㅇ":11,"ㅈ":12,"ㅉ":13,"ㅊ":14,"ㅋ":15,"ㅌ":16,"ㅍ":17,"ㅎ":18};
+ const VV={"ㅏ":0,"ㅐ":1,"ㅑ":2,"ㅒ":3,"ㅓ":4,"ㅔ":5,"ㅕ":6,"ㅖ":7,"ㅗ":8,"ㅘ":9,"ㅙ":10,"ㅚ":11,"ㅛ":12,"ㅜ":13,"ㅝ":14,"ㅞ":15,"ㅟ":16,"ㅠ":17,"ㅡ":18,"ㅢ":19,"ㅣ":20};
+ const T={"":0,"ㄱ":1,"ㄴ":4,"ㄹ":8,"ㅁ":16,"ㅂ":17,"ㅅ":19,"ㅇ":21,"ㅍ":26,"ㅎ":27};
+ const compose=(o,v,t="")=>String.fromCharCode(0xAC00+(L[o]*21+VV[v])*28+T[t]);
+ const vowels="aeiou"; let out="",i=0;
+ while(i<r.length){
+   let c=""; if(r.slice(i,i+2)==="th"||r.slice(i,i+2)==="ch"||r.slice(i,i+2)==="ps"||r.slice(i,i+2)==="ks"){c=r.slice(i,i+2);i+=2}
+   else if(!vowels.includes(r[i])){c=r[i++]||""}
+   if(i>=r.length||!vowels.includes(r[i])){ if(c){out+=({"n":"ㄴ","m":"ㅁ","r":"르","l":"ㄹ","s":"스","k":"크","p":"프","t":"트","g":"그","v":"브","f":"프","z":"즈","ch":"흐","th":"트","ps":"프스","ks":"크스"}[c]||c)}; continue}
+   let v=r[i++], cod="";
+   // one consonant before another consonant or word end becomes Korean coda when possible
+   let rest=r.slice(i), cm=rest.match(/^(ng|th|ch|ps|ks|[a-z])/), nc=cm?cm[0]:"";
+   if(nc && !vowels.includes(nc[0])){
+     let after=rest.slice(nc.length);
+     if((after==="" || (after[0] && !vowels.includes(after[0]))) && ["n","m","l","r","k","p","s","ng"].includes(nc)){
+       cod={"n":"ㄴ","m":"ㅁ","l":"ㄹ","r":"ㄹ","k":"ㄱ","p":"ㅂ","s":"ㅅ","ng":"ㅇ"}[nc]; i+=nc.length;
+     }
+   }
+   let o=onset[c]||"ㅇ"; if(o.length===1 && L[o]!==undefined) out+=compose(o,V[v],cod); else {out+=(c?c:"")+v}
+ }
+ return out || "—";
+}
+function normGreek(s){return clean(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()}
+function clean(s){return s.replace(/[⸀⸂⸃()·.,;:!?]/g,"")}
+function speakGreek(txt){
+ if(!('speechSynthesis' in window))return;
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(txt);
+ u.lang="el-GR"; u.rate=.72; u.pitch=1;
+ const vs=speechSynthesis.getVoices();
+ const gv=vs.find(v=>/^el(-|_)/i.test(v.lang)); if(gv)u.voice=gv;
+ speechSynthesis.speak(u);
+}
+function show(t){
+ const g=GLOSS[t.lemma]||["lexical meaning pending review","어휘 의미 검토 대기"];
+ const vid="JHN.1."+t.v; const dn=(DEEP[vid]||{})[clean(t.word)]||(DEEP[vid]||{})[t.lemma];
+ pc.innerHTML=`<div class=g>${t.word} <button id="wordAudio" type="button" style="font:14px system-ui;border:1px solid #ccc;border-radius:18px;background:#f5f5f5;padding:5px 9px;vertical-align:middle">🔊 음성</button></div><div class=grid>
+ <div class=lab>Pronunciation</div><div>${translit(clean(t.word))}</div>
+ <div class=lab>한국어 발음</div><div>${koPron(clean(t.word))}</div>
+ <div class=lab>Lemma</div><div>${t.lemma}</div>
+ <div class=lab>POS</div><div>${t.pos} · ${POS[t.pos[0]]||t.pos}</div>
+ <div class=lab>Morphology</div><div>${t.parse}<br>${morph(t.parse)}</div>
+ <div class=lab>English</div><div>${g[0]}</div><div class=lab>한국어</div><div>${g[1]}</div></div>
+ ${dn?`<div class=deep><b>Contextual Sense / Syntax</b><br>${dn}</div>`:""}`;
+ const audioBtn=document.getElementById("wordAudio");
+ if(audioBtn) audioBtn.addEventListener("click",()=>speakGreek(clean(t.word)));
+ dlg.showModal();
+}
+function showVar(v){const x=VARIANTS[v];pc.innerHTML=`<div class="g blue">※ John 1:${v}</div><div class=grid>
+<div class=lab>SBLGNT</div><div>${x.sbl}</div><div class=lab>UBS5</div><div>${x.ubs}</div><div class=lab>TR</div><div>${x.tr}</div></div>
+<div class=deep><b>Grammar difference</b><br>${x.grammar||"—"}</div>
+<div class=deep><b>Semantic difference</b><br>${x.semantic||"—"}</div>
+<div class=deep><b>Translation impact</b><br>${x.translation||"—"}</div>
+<div class=deep><b>Variant significance</b><br>${x.significance||"—"}</div>`;dlg.showModal()}
+async function run(){
+ try{
+  const u="https://raw.githubusercontent.com/morphgnt/sblgnt/master/64-Jn-morphgnt.txt";
+  const raw=await (await fetch(u)).text(); const rows=[];
+  for(const line of raw.split(/\r?\n/)){if(!line.startsWith("0401"))continue;if(line.startsWith("0402"))break;
+   const p=line.trim().split(/\s+/); if(p.length<7)continue; const bcv=p[0],v=+bcv.slice(4,6);
+   rows.push({v,pos:p[1],parse:p[2],text:p[3],word:p[4],norm:p[5],lemma:p.slice(6).join(" ")});
+  }
+  const by={};rows.forEach((r,i)=>{r.id=`JHN.1.${r.v}.${String((by[r.v]?.length||0)+1).padStart(3,"0")}`;(by[r.v]??=[]).push(r)});
+  for(let v=1;v<=51;v++){const d=document.createElement("p");d.className="verse";d.innerHTML=`<span class=vn>${v}</span>`;
+   const listen=document.createElement("button");listen.type="button";listen.className="verseAudio";listen.textContent="▶ 듣기";
+   listen.addEventListener("click",(e)=>{e.stopPropagation();const verseText=(by[v]||[]).map(t=>t.word).join(" ");speakGreek(verseText)});d.appendChild(listen);
+   (by[v]||[]).forEach(t=>{const s=document.createElement("span");s.className=`tok ${t.pos[0]}`;s.textContent=t.text+" ";s.onclick=()=>show(t);d.appendChild(s);
+    const va=VARIANTS[v]; if(va && !d.dataset.varMarked){
+      const wordOK=va.anchorWord && normGreek(t.word)===normGreek(va.anchorWord);
+      const lemmaOK=va.anchorLemma && normGreek(t.lemma)===normGreek(va.anchorLemma);
+      if(wordOK||lemmaOK){const m=document.createElement("sup");m.className="var";m.textContent="※";m.title="본문 이형";m.onclick=e=>{e.stopPropagation();showVar(v)};d.appendChild(m);d.dataset.varMarked="1"}
+    }
+   });text.appendChild(d)}
+  const verses=Object.keys(by).length, tokens=rows.length;
+  status.innerHTML=`<b>Loaded & structured:</b> John 1 · ${verses}/51 verses · ${tokens} tokens · token IDs assigned · MorphGNT lemma/POS/parsing attached.`;
+ }catch(e){status.innerHTML="<b>데이터 로드 실패.</b> 인터넷 연결 후 다시 열어 주세요. 원자료를 추측값으로 대체하지 않습니다."}
+}run();
+</script></body></html>
