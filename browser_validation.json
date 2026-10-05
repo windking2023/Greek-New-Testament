@@ -1,0 +1,59 @@
+{
+  "results": [
+    {
+      "chapter": 2,
+      "tokens": 385,
+      "verses": 21,
+      "deepEntries": 28,
+      "deepTokenOccurrences": 36,
+      "variants": 4,
+      "wordSpeechCalls": 385,
+      "verseSpeechCalls": 21
+    },
+    {
+      "chapter": 3,
+      "tokens": 455,
+      "verses": 29,
+      "deepEntries": 31,
+      "deepTokenOccurrences": 34,
+      "variants": 3,
+      "wordSpeechCalls": 455,
+      "verseSpeechCalls": 29
+    },
+    {
+      "chapter": 4,
+      "tokens": 444,
+      "verses": 31,
+      "deepEntries": 31,
+      "deepTokenOccurrences": 35,
+      "variants": 9,
+      "wordSpeechCalls": 444,
+      "verseSpeechCalls": 31
+    },
+    {
+      "chapter": 5,
+      "tokens": 313,
+      "verses": 26,
+      "deepEntries": 29,
+      "deepTokenOccurrences": 29,
+      "variants": 5,
+      "wordSpeechCalls": 313,
+      "verseSpeechCalls": 26
+    },
+    {
+      "chapter": 6,
+      "tokens": 267,
+      "verses": 18,
+      "deepEntries": 23,
+      "deepTokenOccurrences": 26,
+      "variants": 3,
+      "wordSpeechCalls": 267,
+      "verseSpeechCalls": 18
+    }
+  ],
+  "indexGalatians": "6/6 mappings; 2–6 search and verse navigation pass",
+  "johnLinks": "21/21 unchanged",
+  "externalRequests": [],
+  "pageErrors": [],
+  "tts": "Mocked Web Speech API dispatch tested; actual device audio not auditioned"
+}

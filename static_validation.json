@@ -1,0 +1,67 @@
+[
+  {
+    "chapter": 2,
+    "verses": 21,
+    "tokens": 385,
+    "lemmas": 156,
+    "deep_studies": 28,
+    "variants": 4,
+    "flow_segments": 8,
+    "verbs": 78,
+    "nouns": 86,
+    "audio_sha256": "c94d7685b1dc35c626d50f4d2c189ebe160ac8f78e5b200097411bfb56d1f102",
+    "sha256": "bb5b4fb8fb8affd6c2cf8ef6606d3cc0bf4c3f11b6389ae023f83aa02b0634dd"
+  },
+  {
+    "chapter": 3,
+    "verses": 29,
+    "tokens": 455,
+    "lemmas": 151,
+    "deep_studies": 31,
+    "variants": 3,
+    "flow_segments": 7,
+    "verbs": 82,
+    "nouns": 120,
+    "audio_sha256": "c94d7685b1dc35c626d50f4d2c189ebe160ac8f78e5b200097411bfb56d1f102",
+    "sha256": "344a208e12150c8303be53f6dd953dd81d35ad0badf48ba3ddcca61df45db866"
+  },
+  {
+    "chapter": 4,
+    "verses": 31,
+    "tokens": 444,
+    "lemmas": 167,
+    "deep_studies": 31,
+    "variants": 9,
+    "flow_segments": 7,
+    "verbs": 85,
+    "nouns": 92,
+    "audio_sha256": "c94d7685b1dc35c626d50f4d2c189ebe160ac8f78e5b200097411bfb56d1f102",
+    "sha256": "34fd339e352a8522ca623b699d7352d14a7c7a9e3a4a7f0c33a5d470728f187c"
+  },
+  {
+    "chapter": 5,
+    "verses": 26,
+    "tokens": 313,
+    "lemmas": 157,
+    "deep_studies": 29,
+    "variants": 5,
+    "flow_segments": 7,
+    "verbs": 62,
+    "nouns": 86,
+    "audio_sha256": "c94d7685b1dc35c626d50f4d2c189ebe160ac8f78e5b200097411bfb56d1f102",
+    "sha256": "6e3e70e693cd0b9f2a112538322dd0a59ec763cf22cfcfd1ad3641b83d2233dc"
+  },
+  {
+    "chapter": 6,
+    "verses": 18,
+    "tokens": 267,
+    "lemmas": 124,
+    "deep_studies": 23,
+    "variants": 3,
+    "flow_segments": 6,
+    "verbs": 49,
+    "nouns": 54,
+    "audio_sha256": "c94d7685b1dc35c626d50f4d2c189ebe160ac8f78e5b200097411bfb56d1f102",
+    "sha256": "c84098c5ea1bdaaa81da1e6b00043828ec3738fe4f07cc704c1d504997d8d37c"
+  }
+]
